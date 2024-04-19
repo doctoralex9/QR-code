@@ -1,0 +1,145 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'styles.css' %}">
+    <style>
+        /* CSS for modal styling */
+        .modal {
+            display: none; /* Hide the modal by default */
+        }
+    </style>
+</head>
+<body>
+    <main>
+        <h1>Django QR Code Generator</h1>
+        <form method="post" action="{% url 'home' %}">
+            {% csrf_token %}
+            <input type="text" name="text" id="data" placeholder="Write something or enter URL">
+            <button type="submit">Generate</button>
+        </form>
+
+        <div class="qr-img">
+            {% if img_name %}
+                <img src="/media/{{ img_name }}" alt="QR Code">
+            {% endif %}
+        </div>
+        <button type="button" id="register-btn">Register</button>
+        <!-- Registration form -->
+        <div id="registration-modal" class="modal">
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <form method="post" action="{% url 'register' %}">
+                    {% csrf_token %}
+                    <input type="email" name="email" placeholder="Email" required><br>
+                    <input type="text" name="first_name" placeholder="First Name" required><br>
+                    <input type="text" name="last_name" placeholder="Last Name" required><br>
+                    <input type="text" name="username" placeholder="Username" required><br>
+                    <input type="password" name="password" placeholder="Password" required><br>
+                    <button type="submit" id="submit-btn">Sign up</button>
+                </form>
+            </div>
+        </div>
+        <button type="button" id="login-btn">Login</button>
+          <!-- Login form -->
+          <div id="login-modal" class="modal">
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <form id="login-form" method="post" action="{% url 'login' %}">
+                    {% csrf_token %}
+                    <input type="text" id="login-username" name="username" placeholder="Username" required><br>
+                    <input type="password" id="login-password" name="password" placeholder="Password" required><br>
+                    <button type="submit" id="login-submit-btn">Login</button>
+                </form>
+            </div>
+        </div>
+        <!-- JavaScript to handle modal -->
+        <script>
+            var modal = document.getElementById('registration-modal');
+            var loginModal = document.getElementById('login-modal');
+            var registerBtn = document.getElementById('register-btn');
+            var submitBtn = document.getElementById('submit-btn');
+            var closeBtn = document.getElementsByClassName('close')[0];
+            var loginBtn = document.getElementById('login-btn');
+            var loginSubmitBtn = document.getElementById('login-submit-btn');
+
+            registerBtn.onclick = function() {
+                modal.style.display = 'block';
+            }
+            submitBtn.onclick = function() {
+                modal.style.display = 'none';
+            }
+
+            closeBtn.onclick = function() {
+                modal.style.display = 'none';
+            }
+            loginBtn.onclick = function() {
+                loginModal.style.display = 'block';
+            }
+            window.onclick = function(event) {
+                if (event.target == modal) {
+                    modal.style.display = 'none';
+                }
+            }
+            loginSubmitBtn.onclick = function() {
+                loginModal.style.display = 'none';
+                loginUser();
+            }
+
+            function getCookie(name) {
+                var cookieValue = null;
+                if (document.cookie && document.cookie !== '') {
+                    var cookies = document.cookie.split(';');
+                    for (var i = 0; i < cookies.length; i++) {
+                        var cookie = cookies[i].trim();
+                        // Does this cookie string begin with the name we want?
+                        if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                            cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                            break;
+                        }
+                    }
+                }
+                return cookieValue;
+            }
+
+            function loginUser() {
+                var username = document.getElementById('login-username').value;
+                var password = document.getElementById('login-password').value;
+
+                var data = {
+                    username: username,
+                    password: password
+                };
+
+                fetch('/login/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': getCookie('csrftoken')
+                    },
+                    body: JSON.stringify(data)
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    if (data.success) {
+                        window.location.href = data.redirect_url;
+                    } else {
+                        alert('Invalid username or password. Please try again.');
+                    }
+                })
+                .catch(error => {
+                    console.error('There was an error with the fetch operation:', error);
+                });
+            }
+        </script>
+    </main>
+</body>
+</html>
