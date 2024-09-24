@@ -11,11 +11,6 @@ from django.contrib.auth import authenticate, login
 from django.http import JsonResponse, HttpResponseBadRequest
 from django.urls import reverse  # Import reverse function
 
-<<<<<<< HEAD
-# Create your views here.
-=======
-# Create views
->>>>>>> 969b40a906e59b0314fcc4f32dfce2193f964274
 
 
 def generate_QR_code(request):

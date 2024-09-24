@@ -77,24 +77,6 @@ DATABASES = {
     }
 
 }
-<<<<<<< HEAD
-=======
-
-#if we have PostgreSQL
->>>>>>> 969b40a906e59b0314fcc4f32dfce2193f964274
-#DATABASES = {
- #   'default': {
-  #      'ENGINE': 'django.db.backends.postgresql',
-   #     'NAME': 'your_database_name',
-    #    'USER': 'your_database_user',
-     #   'PASSWORD': 'your_database_password',
-      #  'HOST': 'localhost',  # Or the IP address where your PostgreSQL server is running
-       # 'PORT': '5432',       # Default PostgreSQL port
-   # }
-#}
-#psycopg2 connector already installed
-
-# Password validation
 
 
 AUTH_PASSWORD_VALIDATORS = [
