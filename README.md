@@ -25,11 +25,9 @@ python -m pip install django-allauth
 python -m pip install -r requirements.txt
 pip install qrcode[pil]
 
-
 If the above commands don't work, you may try without the python -m prefix:
 pip install djangorestframework
 pip install django-allauth
-pip install qrcode[pil]
 
 7.Run the Server: To start the Django development server, type the following command in the terminal:
 python manage.py runserver
@@ -42,6 +40,5 @@ Ensure that all the dependencies listed in the project's requirements.txt file a
 If you see a message about unapplied migrations, run python manage.py migrate before starting the server.
 
 Ensure to include a requirements.txt file in your repository with all the necessary dependencies listed. This file allows users to install all dependencies at once using pip install -r requirements.txt.
-
 
 

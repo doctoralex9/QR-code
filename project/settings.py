@@ -77,6 +77,11 @@ DATABASES = {
     }
 
 }
+<<<<<<< HEAD
+=======
+
+#if we have PostgreSQL
+>>>>>>> 969b40a906e59b0314fcc4f32dfce2193f964274
 #DATABASES = {
  #   'default': {
   #      'ENGINE': 'django.db.backends.postgresql',

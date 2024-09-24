@@ -1,8 +1,12 @@
 """
 URL configuration for project project.
 
+<<<<<<< HEAD
 The urlpatterns list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/4.2/topics/http/urls/
+=======
+The urlpatterns list routes URLs to views. 
+>>>>>>> 969b40a906e59b0314fcc4f32dfce2193f964274
 Examples:
 Function views
     1. Add an import:  from my_app import views
