@@ -7,9 +7,138 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{% static 'styles.css' %}">
     <style>
-        /* CSS for modal styling */
+        /* General styling */
+        body {
+            background: linear-gradient(180deg, #0d0d14, #1c1c34); /* Dark gradient from top to bottom */
+            color: #f0f0f0;
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh; /* Ensure background covers entire viewport */
+        }
+
+        main {
+            width: 90%;
+            margin: 0 auto;
+            padding-top: 50px;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            color: #bb86fc; /* Lighter purple for the title */
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+        }
+
+        /* Form styling */
+        form input, form button {
+            padding: 12px;
+            margin: 10px;
+            font-size: 1rem;
+            border-radius: 8px;
+            border: none;
+        }
+
+        form input {
+            background-color: #2e2e47; /* Dark blue background */
+            color: #fff;
+            width: 60%;
+            border: 1px solid #393955; /* Slightly lighter blue border */
+        }
+
+        form button {
+            background-color: #5e35b1; /* Deep purple */
+            color: #fff;
+            border: none;
+            cursor: pointer;
+        }
+
+        form button:hover {
+            background-color: #452b8b; /* Darker purple on hover */
+        }
+
+        /* QR Code Image styling */
+        .qr-img img {
+            margin-top: 20px;
+            width: 250px;
+            height: 250px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5);
+        }
+
+        /* Button styling for modals */
+        #register-btn, #login-btn {
+            padding: 12px 24px;
+            margin: 20px;
+            background-color: #3949ab; /* Deep blue */
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            cursor: pointer;
+        }
+
+        #register-btn:hover, #login-btn:hover {
+            background-color: #283593; /* Darker blue */
+        }
+
+        /* Modal styling */
         .modal {
-            display: none; /* Hide the modal by default */
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.85); /* Darker overlay for the modal */
+        }
+
+        .modal-content {
+            background-color: #232345; /* Dark blue modal background */
+            margin: 10% auto;
+            padding: 20px;
+            border-radius: 10px;
+            width: 80%;
+            max-width: 400px;
+            color: #fff;
+        }
+
+        .modal-content input {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 8px;
+            border: none;
+            background-color: #393955; /* Slightly lighter blue */
+            color: #fff;
+        }
+
+        .modal-content button {
+            width: 100%;
+            padding: 12px;
+            margin-top: 10px;
+            background-color: #5e35b1; /* Deep purple */
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            color: #fff;
+        }
+
+        .modal-content button:hover {
+            background-color: #452b8b; /* Darker purple on hover */
+        }
+
+        /* Close button styling */
+        .close {
+            color: #fff;
+            float: right;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        .close:hover {
+            color: #ffce45; /* Yellow hover for close */
         }
     </style>
 </head>
@@ -27,6 +156,7 @@
                 <img src="/media/{{ img_name }}" alt="QR Code">
             {% endif %}
         </div>
+
         <button type="button" id="register-btn">Register</button>
         <!-- Registration form -->
         <div id="registration-modal" class="modal">
@@ -43,9 +173,10 @@
                 </form>
             </div>
         </div>
+
         <button type="button" id="login-btn">Login</button>
-          <!-- Login form -->
-          <div id="login-modal" class="modal">
+        <!-- Login form -->
+        <div id="login-modal" class="modal">
             <div class="modal-content">
                 <span class="close">&times;</span>
                 <form id="login-form" method="post" action="{% url 'login' %}">
@@ -56,88 +187,35 @@
                 </form>
             </div>
         </div>
-        <!-- JavaScript to handle modal -->
+
         <script>
             var modal = document.getElementById('registration-modal');
             var loginModal = document.getElementById('login-modal');
             var registerBtn = document.getElementById('register-btn');
-            var submitBtn = document.getElementById('submit-btn');
-            var closeBtn = document.getElementsByClassName('close')[0];
+            var closeBtns = document.getElementsByClassName('close');
             var loginBtn = document.getElementById('login-btn');
-            var loginSubmitBtn = document.getElementById('login-submit-btn');
 
             registerBtn.onclick = function() {
                 modal.style.display = 'block';
             }
-            submitBtn.onclick = function() {
-                modal.style.display = 'none';
-            }
 
-            closeBtn.onclick = function() {
-                modal.style.display = 'none';
-            }
             loginBtn.onclick = function() {
                 loginModal.style.display = 'block';
             }
+
+            for (let i = 0; i < closeBtns.length; i++) {
+                closeBtns[i].onclick = function() {
+                    modal.style.display = 'none';
+                    loginModal.style.display = 'none';
+                }
+            }
+
             window.onclick = function(event) {
                 if (event.target == modal) {
                     modal.style.display = 'none';
+                } else if (event.target == loginModal) {
+                    loginModal.style.display = 'none';
                 }
-            }
-            loginSubmitBtn.onclick = function() {
-                loginModal.style.display = 'none';
-                loginUser();
-            }
-
-            function getCookie(name) {
-                var cookieValue = null;
-                if (document.cookie && document.cookie !== '') {
-                    var cookies = document.cookie.split(';');
-                    for (var i = 0; i < cookies.length; i++) {
-                        var cookie = cookies[i].trim();
-                        // Does this cookie string begin with the name we want?
-                        if (cookie.substring(0, name.length + 1) === (name + '=')) {
-                            cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                            break;
-                        }
-                    }
-                }
-                return cookieValue;
-            }
-
-            function loginUser() {
-                var username = document.getElementById('login-username').value;
-                var password = document.getElementById('login-password').value;
-
-                var data = {
-                    username: username,
-                    password: password
-                };
-
-                fetch('/login/', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRFToken': getCookie('csrftoken')
-                    },
-                    body: JSON.stringify(data)
-                })
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error('Network response was not ok');
-                    }
-                    return response.json();
-                })
-                .then(data => {
-                    if (data.success) {
-                        window.location.href = data.redirect_url;
-                    } else {
-                        alert('Invalid username or password. Please try again.');
-                    }
-                })
-                .catch(error => {
-                    console.error('There was an error with the fetch operation:', error);
-                });
             }
         </script>
     </main>
