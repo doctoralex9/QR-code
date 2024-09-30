@@ -7,139 +7,148 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{% static 'styles.css' %}">
     <style>
-        /* General styling */
-        body {
-            background: linear-gradient(180deg, #0d0d14, #1c1c34); /* Dark gradient from top to bottom */
-            color: #f0f0f0;
-            font-family: 'Arial', sans-serif;
-            margin: 0;
-            padding: 0;
-            min-height: 100vh; /* Ensure background covers entire viewport */
-        }
+       /* General styling */
+body {
+    background: url("{% static 'images/background.jpg' %}") no-repeat center center fixed;
+    background-size: cover; 
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+}
 
-        main {
-            width: 90%;
-            margin: 0 auto;
-            padding-top: 50px;
-            text-align: center;
-        }
+/* Lightly black background for the main element */
+main {
+    width: 90%;
+    margin: 0 auto;
+    padding-top: 50px;
+    text-align: center;
+    background: rgba(0, 0, 0, 0.5); /* Lightly black background */
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: none; /* Remove any shadow around main */
+}
 
-        h1 {
-            font-size: 2.5rem;
-            margin-bottom: 20px;
-            color: #bb86fc; /* Lighter purple for the title */
-            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
-        }
+/* Title styling */
+h1 {
+    font-size: 2.5rem;
+    margin-bottom: none;
+    color: #6f2c91; /* Purple color for title */
+    text-shadow: none; /* Remove shadow to avoid any greyish effect */
+}
 
-        /* Form styling */
-        form input, form button {
-            padding: 12px;
-            margin: 10px;
-            font-size: 1rem;
-            border-radius: 8px;
-            border: none;
-        }
+/* Form styling */
+form input, form button {
+    padding: 12px;
+    margin: 10px;
+    font-size: 1rem;
+    border-radius: 10px;
+    border: none;
+}
 
-        form input {
-            background-color: #2e2e47; /* Dark blue background */
-            color: #fff;
-            width: 60%;
-            border: 1px solid #393955; /* Slightly lighter blue border */
-        }
+form input {
+    background-color: #2e2e47; /* Dark blue background for input */
+    color: #fff;
+    width: 60%;
+    border: 1px solid #393955; /* Dark border */
+    box-shadow: none; /* Remove shadow around input */
+}
 
-        form button {
-            background-color: #5e35b1; /* Deep purple */
-            color: #fff;
-            border: none;
-            cursor: pointer;
-        }
+form button {
+    background-color: #5e35b1; /* Deep purple */
+    color: #fff;
+    border: none;
+    cursor: pointer;
+}
 
-        form button:hover {
-            background-color: #452b8b; /* Darker purple on hover */
-        }
+form button:hover {
+    background-color: #452b8b; /* Darker purple on hover */
+}
 
-        /* QR Code Image styling */
-        .qr-img img {
-            margin-top: 20px;
-            width: 250px;
-            height: 250px;
-            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5);
-        }
+/* QR Code Image styling */
+.qr-img img {
+    margin-top: 20px;
+    width: 250px;
+    height: 250px;
+    box-shadow: none; /* Remove shadow around QR code */
+}
 
-        /* Button styling for modals */
-        #register-btn, #login-btn {
-            padding: 12px 24px;
-            margin: 20px;
-            background-color: #3949ab; /* Deep blue */
-            color: #fff;
-            border: none;
-            border-radius: 8px;
-            font-size: 1rem;
-            cursor: pointer;
-        }
+/* Button styling for modals */
+#register-btn, #login-btn {
+    padding: 12px 24px;
+    margin: 20px;
+    background-color: #3949ab; /* Deep blue */
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    cursor: pointer;
+}
 
-        #register-btn:hover, #login-btn:hover {
-            background-color: #283593; /* Darker blue */
-        }
+#register-btn:hover, #login-btn:hover {
+    background-color: #283593; /* Darker blue */
+}
 
-        /* Modal styling */
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 1;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.85); /* Darker overlay for the modal */
-        }
+/* Modal styling */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.85); /* Darker overlay for the modal */
+}
 
-        .modal-content {
-            background-color: #232345; /* Dark blue modal background */
-            margin: 10% auto;
-            padding: 20px;
-            border-radius: 10px;
-            width: 80%;
-            max-width: 400px;
-            color: #fff;
-        }
+.modal-content {
+    background-color: #232345; /* Dark blue modal background */
+    margin: 10% auto;
+    padding: 20px;
+    border-radius: 10px;
+    width: 80%;
+    max-width: 400px;
+    color: #fff;
+}
 
-        .modal-content input {
-            width: 100%;
-            padding: 10px;
-            margin: 10px 0;
-            border-radius: 8px;
-            border: none;
-            background-color: #393955; /* Slightly lighter blue */
-            color: #fff;
-        }
+.modal-content input {
+    width: 100%;
+    padding: 12px;
+    margin: 10 0px;
+    border-radius: 8px;
+    border: none;
+    background-color: #393955; /* Slightly lighter blue */
+    color: #fff;
+    box-sizing: border-box; /* Ensure padding and border are included in width */
+}
 
-        .modal-content button {
-            width: 100%;
-            padding: 12px;
-            margin-top: 10px;
-            background-color: #5e35b1; /* Deep purple */
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            color: #fff;
-        }
+.modal-content button {
+    width: 100%;
+    padding: 12px;
+    margin-top: 10px;
+    background-color: #5e35b1; /* Deep purple */
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    color: #fff;
+}
 
-        .modal-content button:hover {
-            background-color: #452b8b; /* Darker purple on hover */
-        }
+.modal-content button:hover {
+    background-color: #452b8b; /* Darker purple on hover */
+}
 
-        /* Close button styling */
-        .close {
-            color: #fff;
-            float: right;
-            font-size: 1.5rem;
-            cursor: pointer;
-        }
+/* Close button styling */
+.close {
+    color: #fff;
+    float: right;
+    font-size: 1.5rem;
+    cursor: pointer;
+}
 
-        .close:hover {
-            color: #ffce45; /* Yellow hover for close */
-        }
+.close:hover {
+    color: #ffce45; /* Yellow hover for close */
+}
+
     </style>
 </head>
 <body>
