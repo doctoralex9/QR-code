@@ -1,0 +1,22 @@
+# Django and related packages
+Django==4.2.1
+asgiref==3.6.0
+sqlparse==0.4.4
+tzdata==2023.3
+
+#Databese connectivity
+mysqlclient
+
+# Django REST Framework
+djangorestframework
+
+# Django Allauth
+django-allauth
+
+# QR Code generation
+# The [pil] extra ensures Pillow is installed as a dependency.
+qrcode[pil]>=7.4.2
+pypng==0.20220715.0
+
+# Other utilities
+typing-extensions==4.5.0

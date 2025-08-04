@@ -1,0 +1,49 @@
+body {
+    background: url("{% static 'images/background.jpg' %}") no-repeat center center fixed;
+    background-size: cover; 
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+}
+
+main {
+    width: 90%;
+    margin: 0 auto;
+    padding-top: 50px;
+    text-align: center;
+    background: transparent; /* Remove background */
+    border-radius: 10px;
+}
+
+h1 {
+    font-size: 2.5rem;
+    margin-bottom: none;
+    color: #6f2c91; /* Purple */
+    text-shadow: none;
+    background: transparent; /* Remove any background */
+}
+
+form input {
+    background-color: #1c1c33; /* Darker background */
+    color: #fff;
+    width: 60%;
+    border: 1px solid #393955;
+    box-shadow: none; /* Remove shadow */
+}
+
+form button {
+    background-color: #2c2c54; /* Darker button */
+    color: #fff;
+    cursor: pointer;
+}
+
+.modal-content {
+    background-color: #1a1a2e; /* Darker modal background */
+    margin: 10% auto;
+    padding: 20px;
+    border-radius: 10px;
+    width: 80%;
+    max-width: 400px;
+    color: #fff;
+}

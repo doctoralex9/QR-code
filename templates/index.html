@@ -1,0 +1,232 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'styles.css' %}">
+    <style>
+       /* General styling */
+body {
+    background: url("{% static 'images/background.jpg' %}") no-repeat center center fixed;
+    background-size: cover; 
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+}
+
+/* Lightly black background for the main element */
+main {
+    width: 90%;
+    margin: 0 auto;
+    padding-top: 50px;
+    text-align: center;
+    background: rgba(0, 0, 0, 0.5); /* Lightly black background */
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: none; /* Remove any shadow around main */
+}
+
+/* Title styling */
+h1 {
+    font-size: 2.5rem;
+    margin-bottom: none;
+    color: #6f2c91; /* Purple color for title */
+    text-shadow: none; /* Remove shadow to avoid any greyish effect */
+}
+
+/* Form styling */
+form input, form button {
+    padding: 12px;
+    margin: 10px;
+    font-size: 1rem;
+    border-radius: 10px;
+    border: none;
+}
+
+form input {
+    background-color: #2e2e47; /* Dark blue background for input */
+    color: #fff;
+    width: 60%;
+    border: 1px solid #393955; /* Dark border */
+    box-shadow: none; /* Remove shadow around input */
+}
+
+form button {
+    background-color: #5e35b1; /* Deep purple */
+    color: #fff;
+    border: none;
+    cursor: pointer;
+}
+
+form button:hover {
+    background-color: #452b8b; /* Darker purple on hover */
+}
+
+/* QR Code Image styling */
+.qr-img img {
+    margin-top: 20px;
+    width: 250px;
+    height: 250px;
+    box-shadow: none; /* Remove shadow around QR code */
+}
+
+/* Button styling for modals */
+#register-btn, #login-btn {
+    padding: 12px 24px;
+    margin: 20px;
+    background-color: #3949ab; /* Deep blue */
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    cursor: pointer;
+}
+
+#register-btn:hover, #login-btn:hover {
+    background-color: #283593; /* Darker blue */
+}
+
+/* Modal styling */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.85); /* Darker overlay for the modal */
+}
+
+.modal-content {
+    background-color: #232345; /* Dark blue modal background */
+    margin: 10% auto;
+    padding: 20px;
+    border-radius: 10px;
+    width: 80%;
+    max-width: 400px;
+    color: #fff;
+}
+
+.modal-content input {
+    width: 100%;
+    padding: 12px;
+    margin: 10 0px;
+    border-radius: 8px;
+    border: none;
+    background-color: #393955; /* Slightly lighter blue */
+    color: #fff;
+    box-sizing: border-box; /* Ensure padding and border are included in width */
+}
+
+.modal-content button {
+    width: 100%;
+    padding: 12px;
+    margin-top: 10px;
+    background-color: #5e35b1; /* Deep purple */
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    color: #fff;
+}
+
+.modal-content button:hover {
+    background-color: #452b8b; /* Darker purple on hover */
+}
+
+/* Close button styling */
+.close {
+    color: #fff;
+    float: right;
+    font-size: 1.5rem;
+    cursor: pointer;
+}
+
+.close:hover {
+    color: #ffce45; /* Yellow hover for close */
+}
+
+    </style>
+</head>
+<body>
+    <main>
+        <h1>Django QR Code Generator</h1>
+        <form method="post" action="{% url 'home' %}">
+            {% csrf_token %}
+            <input type="text" name="text" id="data" placeholder="Write something or enter URL">
+            <button type="submit">Generate</button>
+        </form>
+
+        <div class="qr-img">
+            {% if img_name %}
+                <img src="/media/{{ img_name }}" alt="QR Code">
+            {% endif %}
+        </div>
+
+        <button type="button" id="register-btn">Register</button>
+        <!-- Registration form -->
+        <div id="registration-modal" class="modal">
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <form method="post" action="{% url 'register' %}">
+                    {% csrf_token %}
+                    <input type="email" name="email" placeholder="Email" required><br>
+                    <input type="text" name="first_name" placeholder="First Name" required><br>
+                    <input type="text" name="last_name" placeholder="Last Name" required><br>
+                    <input type="text" name="username" placeholder="Username" required><br>
+                    <input type="password" name="password" placeholder="Password" required><br>
+                    <button type="submit" id="submit-btn">Sign up</button>
+                </form>
+            </div>
+        </div>
+
+        <button type="button" id="login-btn">Login</button>
+        <!-- Login form -->
+        <div id="login-modal" class="modal">
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <form id="login-form" method="post" action="{% url 'login' %}">
+                    {% csrf_token %}
+                    <input type="text" id="login-username" name="username" placeholder="Username" required><br>
+                    <input type="password" id="login-password" name="password" placeholder="Password" required><br>
+                    <button type="submit" id="login-submit-btn">Login</button>
+                </form>
+            </div>
+        </div>
+
+        <script>
+            var modal = document.getElementById('registration-modal');
+            var loginModal = document.getElementById('login-modal');
+            var registerBtn = document.getElementById('register-btn');
+            var closeBtns = document.getElementsByClassName('close');
+            var loginBtn = document.getElementById('login-btn');
+
+            registerBtn.onclick = function() {
+                modal.style.display = 'block';
+            }
+
+            loginBtn.onclick = function() {
+                loginModal.style.display = 'block';
+            }
+
+            for (let i = 0; i < closeBtns.length; i++) {
+                closeBtns[i].onclick = function() {
+                    modal.style.display = 'none';
+                    loginModal.style.display = 'none';
+                }
+            }
+
+            window.onclick = function(event) {
+                if (event.target == modal) {
+                    modal.style.display = 'none';
+                } else if (event.target == loginModal) {
+                    loginModal.style.display = 'none';
+                }
+            }
+        </script>
+    </main>
+</body>
+</html>
