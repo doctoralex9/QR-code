@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Django and related packages
 Django==4.2.1
 asgiref==3.6.0
@@ -20,3 +21,4 @@ pypng==0.20220715.0
 
 # Other utilities
 typing-extensions==4.5.0
+

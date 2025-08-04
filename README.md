@@ -60,3 +60,6 @@ Troubleshooting
 Database Errors on Startup: If you see an error like ImproperlyConfigured: Error loading MySQLdb module, it means the database connector is missing. Run pip install -r requirements.txt again to install mysqlclient.
 
 Unapplied Migrations: If you see a message about unapplied migrations, run python manage.py migrate before starting the server.
+
+
+
