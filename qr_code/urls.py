@@ -6,7 +6,6 @@ from .views import profile_view
 urlpatterns = [
     path('', generate_QR_code, name='home'),
     path('register/', register_user, name='register'),
-
+    path('login/', login_user, name='login'),
     path('profile/', profile_view, name='profile'),
-
 ]
